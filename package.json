@@ -1,0 +1,21 @@
+{
+  "name": "stats-collector",
+  "version": "1.0.0",
+  "description": "Collecting stats of basketball competitions",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pablo Acevedo",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.13.0"
+  }
+}
