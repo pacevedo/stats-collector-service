@@ -1,13 +1,17 @@
 import express from 'express';
+import cors from 'cors'
 import competitions from './competitions.js'
 import * as match from './euroleague/match.js';
 import * as player from './euroleague/player.js';
 import * as round from './euroleague/round.js';
 import * as team from './euroleague/team.js';
 
+
 const app = express();
 
 app.disable("x-powered-by")
+
+app.use(cors())
 
 app.get('/', (req, res) => {
   res.send('')
@@ -51,6 +55,21 @@ app.get('/euroleague/team/pending/:season', (req, res) => {
 app.post('/euroleague/match/:gamecode/:season', (req, res) => {
   const { gamecode, season } = req.params
   match.processMatchData(gamecode, competitions.getAbr(competitions.EUROLEAGUE), season).then(
+    response => {
+      res.send(response)
+  })
+});
+
+app.post('/euroleague/match/:gamecode/:season', (req, res) => {
+  const { gamecode, season } = req.params
+  match.processMatchData(gamecode, competitions.getAbr(competitions.EUROLEAGUE), season).then(
+    response => {
+      res.send(response)
+  })
+});
+
+app.get('/euroleague/match/:season', (req, res) => {
+  match.getNumMatches(req.params.season, competitions.EUROLEAGUE).then(
     response => {
       res.send(response)
   })
@@ -105,6 +124,13 @@ app.post('/eurocup/round/:roundNumber/:phase/:season', (req, res) => {
   round.processRound(roundNumber, phase, competitions.getAbr(competitions.EUROCUP), season).then(
     response => {
       res.send(JSON.stringify(response))
+  })
+});
+
+app.get('/eurocup/match/:season', (req, res) => {
+  match.getNumMatches(req.params.season, competitions.EUROCUP).then(
+    response => {
+      res.send(response)
   })
 });
 

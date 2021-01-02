@@ -88,3 +88,7 @@ const setShotChart = async (match, gamecode, competition, season) => {
     match.shotChart = shots.getShotChart(response.data)
   }
 }
+
+export const getNumMatches = async (season, competition) => {
+  return await matches.getNumMatches(season, competition)
+}

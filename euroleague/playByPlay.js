@@ -70,7 +70,7 @@ export const getPlayByPlay = data => {
   pbp.push(getPlayByPlayQuarter(data.SecondQuarter))
   pbp.push(getPlayByPlayQuarter(data.ThirdQuarter))
   pbp.push(getPlayByPlayQuarter(data.ForthQuarter))
-  if (data.ExtraTime.length > 0) {
+  if (data.ExtraTime !== null && data.ExtraTime.length > 0) {
     pbp = [...pbp, ...getPlayByPlayExtraTime(data.ExtraTime)]
   }
   return pbp
