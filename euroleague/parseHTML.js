@@ -63,14 +63,72 @@ export const getPlayerData = html => {
   const name = $(".player-data .name")
   const first = $(".summary-first span span")
   const second = $(".summary-second span")
-  player = {
-    name: name.text().trim(),
-    position: first[1].children[0].data.trim(),
-    height: parseFloat(second[0].children[0].data.replace("Height: ","")),
-    born: new Date(second[1].children[0].data.replace("Born: ","")+" 12:00:00"),
-    nationality: second[2].children[0].data.replace("Nationality: ","")
+  const positionContainer = first[1] !== undefined ? first[1] : first[0]
+  player.name = name.text().trim()
+  
+  if (positionContainer !== undefined) {
+    player.position = positionContainer.children[0].data.trim()
+  }
+  const height = getHeight(second)
+  if (height !== null) {
+    player.height = height
+  } else {
+    console.error("No height for "+player.name)
+  }
+
+  const born = getDateOfBirth(second)
+  if (born !== null) {
+    player.born = born
+  } else {
+    console.error("No date of birth for "+player.name)
+  }
+
+  const nationality = getNationality(second)
+  if (nationality !== null) {
+    player.nationality = nationality
+  } else {
+    console.error("No nationality for "+player.name)
   }
   return player
+}
+
+const getHeight = elements => {
+  const arrIndex = [0,1,2]
+  for (const index of arrIndex) {
+    if (elements[index] !== undefined) {
+      const element = elements[index]
+      if (element.children[0] !== undefined && element.children[0].data.includes("Height")) {
+        return parseFloat(element.children[0].data.replace("Height: ",""))
+      }
+    }
+  }
+  return null
+}
+
+const getDateOfBirth = elements => {
+  const arrIndex = [0,1,2]
+  for (const index of arrIndex) {
+    if (elements[index] !== undefined) {
+      const element = elements[index]
+      if (element.children[0] !== undefined && element.children[0].data.includes("Born")) {
+        return new Date(element.children[0].data.replace("Born: ","")+" 12:00:00")
+      }
+    }
+  }
+  return null
+}
+
+const getNationality = elements => {
+  const arrIndex = [0,1,2]
+  for (const index of arrIndex) {
+    if (elements[index] !== undefined) {
+      const element = elements[index]
+      if (element.children[0] !== undefined && element.children[0].data.includes("Nationality")) {
+        return element.children[0].data.replace("Nationality: ","")
+      }
+    }
+  }
+  return null
 }
 
 const getBasicMatchData = html => {

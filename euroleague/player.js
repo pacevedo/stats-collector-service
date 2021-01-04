@@ -23,7 +23,7 @@ const getHtmlPlayerData = async (playercode, competition, season) => {
   try {
     const route = competitions.getByAbr(competition) === competitions.EUROLEAGUE ? routes.player.el : routes.player.ec
     const url = route+'?pcode='+playercode+'&seasoncode='+competition+season
-    return await axios.get(url)
+    return await axios.get(url, {withCredentials: true})
   } catch (error) {
     console.error(error)
   }
