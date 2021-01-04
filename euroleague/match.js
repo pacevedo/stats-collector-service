@@ -39,22 +39,26 @@ export const processMatchData = async (gamecode, competition, season) => {
     const response = await getAPIMatchData(gamecode, competition, season)
     const data = response.data
     const html = await getHtmlMatchData(gamecode, competition, season)
-    const byQuarters = parseHTML.getMatchDataByQuarters(html.data)
-    if (data !== '') {
-      match = {
-        gamecode: gamecode,
-        competition: nameCompetition,
-        season: season,
-        date: utils.parseDate(data.Date, data.Hour),
-        round: data.Round,
-        phase: data.Phase.trim(),
-        stadium: data.Stadium.trim(),
-        local: { name: data.TeamA, code: data.CodeTeamA, points: parseInt(data.ScoreA), byQuarters: byQuarters.local},
-        visitor: { name: data.TeamB, code: data.CodeTeamB, points: parseInt(data.ScoreB), byQuarters: byQuarters.visitor},
+    if (html !== undefined) {
+      const byQuarters = parseHTML.getMatchDataByQuarters(html.data)
+      if (data !== '') {
+        match = {
+          gamecode: gamecode,
+          competition: nameCompetition,
+          season: season,
+          date: utils.parseDate(data.Date, data.Hour),
+          round: data.Round,
+          phase: data.Phase.trim(),
+          stadium: data.Stadium.trim(),
+          local: { name: data.TeamA, code: data.CodeTeamA, points: parseInt(data.ScoreA), byQuarters: byQuarters.local},
+          visitor: { name: data.TeamB, code: data.CodeTeamB, points: parseInt(data.ScoreB), byQuarters: byQuarters.visitor},
+        }
+        await setBoxScore(match, gamecode, competition, season)
+      } else {
+        match = parseHTML.getMatchData(html.data, gamecode, nameCompetition, season, byQuarters)
       }
-      await setBoxScore(match, gamecode, competition, season)
     } else {
-      match = parseHTML.getMatchData(html.data, gamecode, nameCompetition, season, byQuarters)
+      console.error(matchKey+" NOT OBTAINED")
     }
     await setPlayByPlay(match, gamecode, competition, season)
     await setShotChart(match, gamecode, competition, season)
