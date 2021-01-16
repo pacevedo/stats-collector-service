@@ -159,12 +159,12 @@ const getTeams = html => {
     const linkVisitor = $(selectorVisitor+" a" )[0]
     
     teams.local = {
-      code: getCodeItemByLink(linkLocal.attribs['href'], "clubcode="),
+      code: getCodeItemByLink(linkLocal.attribs['href'], "clubcode=", false),
       name: $(selectorLocal+" .name")[0].children[0].data.trim().toUpperCase(),
       points: parseInt($(selectorLocal+" .score").text())
     }
     teams.visitor = {
-      code: getCodeItemByLink(linkVisitor.attribs['href'], "clubcode="),
+      code: getCodeItemByLink(linkVisitor.attribs['href'], "clubcode=", false),
       name: $(selectorVisitor+" .name")[0].children[0].data.trim().toUpperCase(),
       points: parseInt($(selectorVisitor+" .score").text())
     }
@@ -222,7 +222,7 @@ const getBoxScoreDataRow = (element, isPlayer) => {
     switch (ind) {
       case 1: 
         if (isPlayer) {
-          statLine.code = getCodeItemByLink (elem.children[0].attribs['href'], "pcode=")
+          statLine.code = getCodeItemByLink (elem.children[0].attribs['href'], "pcode=", true)
           statLine.start = isStarter(elem.children[0].attribs['class']) ? 1 : 0
         }
         break
@@ -274,14 +274,14 @@ const getValueFromElement = (elem) => {
 }
 
 const parseValue = value => {
-  return value.trim() === "" ? 0 : parseInt(value.trim())
+  return (value.trim() === "" || value.trim() === "-") ? 0 : parseInt(value.trim())
 }
 
-const getCodeItemByLink = (link, item) => {
+const getCodeItemByLink = (link, item, isPlayer) => {
   const aux = link.split(item)
   if (aux.length === 2) {
     const aux2 = aux[1].split("&")
-    return utils.parsePlayerCode(aux2[0])
+    return isPlayer ? utils.parsePlayerCode(aux2[0]) : aux2[0]
   } else {
     console.error("Error parsing code player from link: "+link)
   }

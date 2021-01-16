@@ -51,7 +51,7 @@ const getPlayLine = play => {
     playLine.team = play.CODETEAM.trim()
   }
   if (play.PLAYER_ID.trim() !== "") {
-    playLine.player = play.PLAYER_ID.trim()
+    playLine.player = utils.parsePlayerCode(play.PLAYER_ID.trim())
   }
   if (play.MARKERTIME.trim() !== "") {
     playLine.time = utils.timeToSeconds(play.MARKERTIME.trim())

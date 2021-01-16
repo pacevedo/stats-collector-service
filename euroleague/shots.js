@@ -18,7 +18,7 @@ export const getShotChart = data => {
     const shotLine = {
       numShot: shot.NUM_ANOT,
       team: shot.TEAM.trim(),
-      player: shot.ID_PLAYER.trim(),
+      player: utils.parsePlayerCode(shot.ID_PLAYER.trim()),
       action: shot.ID_ACTION.trim(),
       x: shot.COORD_X,
       y: shot.COORD_Y,

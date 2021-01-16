@@ -36,13 +36,17 @@ export const savePlayer = async (playercode, codeteam, competitionAbr, season) =
   const newSeason = {season: season, competition: competitions.getByAbr(competitionAbr), team: codeteam}
   if (player === null) {
     const html = await getHtmlPlayerData(playercode, competitionAbr, season)
-    player = parseHTML.getPlayerData(html.data)
-    player.playercode = playercode
-    player.seasons = [newSeason] 
-    try {
-      await players.insertOne(player)
-    } catch (error) {
-      console.error("Error inserting playercode: "+playercode+" in season "+season+" competition: "+competitionAbr+" team: "+codeteam+". Error: "+error)
+    if (html !== undefined) {
+      player = parseHTML.getPlayerData(html.data)
+      player.playercode = playercode
+      player.seasons = [newSeason] 
+      try {
+        await players.insertOne(player)
+      } catch (error) {
+        console.error("Error inserting playercode: "+playercode+" in season "+season+" competition: "+competitionAbr+" team: "+codeteam+". Error: "+error)
+      }
+    } else {
+      console.error("Error obtaining player: "+playercode+" in season "+season+" competition: "+competitionAbr+" team: "+codeteam+".")
     }
   } else {
     const arrSeason = player.seasons.filter(item => (item.season === season && item.competition === competitions.getByAbr(competitionAbr) && item.team === codeteam))
