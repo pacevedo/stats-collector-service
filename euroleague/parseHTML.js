@@ -228,7 +228,12 @@ const getBoxScoreDataRow = (element, isPlayer) => {
         break
       case 2: 
         if (isPlayer) {
-          statLine.secs = (value === "DNP") ? 0 : utils.timeToSeconds(value)
+          try {
+            statLine.secs = utils.timeToSeconds(value)
+          } catch (exception) {
+            statLine.secs = 0
+            console.error(exception)
+          }
         }
         break
       case 3:

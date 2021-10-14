@@ -1,10 +1,12 @@
 export const timeToSeconds = time => {
-  const aux = time.trim().split(":")
   let seconds = 0
-  if (aux.length === 2) {
-    seconds = aux[0] * 60 + aux[1] * 1
-  } else {
-    console.error("timeToSeconds - Parsing error. Length = " + aux.length + " time: " + time)
+  if (time !== "DNP") {
+    const aux = time.trim().split(":")
+    if (aux.length === 2) {
+      seconds = aux[0] * 60 + aux[1] * 1
+    } else {
+      throw "timeToSeconds - Parsing error. Length = " + aux.length + " time: " + time
+    }
   }
   return seconds
 }

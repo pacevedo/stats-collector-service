@@ -25,8 +25,13 @@ export const getShotChart = data => {
       zone: shot.ZONE,
       fastbreak: shot.FASTBREAK,
       secondChance: shot.SECOND_CHANCE,
-      ptsOffTurnover: shot.POINTS_OFF_TURNOVER,
-      time: utils.timeToSeconds(shot.CONSOLE),
+      ptsOffTurnover: shot.POINTS_OFF_TURNOVER
+    }
+    try {
+      shotLine.time = utils.timeToSeconds(shot.CONSOLE)
+    } catch (exception) {
+      shotLine.time = 0
+      console.error("Shots - "+exception+" | player: "+shotLine.player+" team: "+shotLine.team+" numShot: "+shotLine.numShot)
     }
     if (shot.POINTS_A !== null || shot.POINTS_B !== null) {
       shotLine.ptsLocal = shot.POINTS_A !== null ? shot.POINTS_A : 0

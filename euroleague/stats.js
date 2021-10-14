@@ -45,7 +45,12 @@ const getStatLine = (stats, isPlayer) => {
   if (isPlayer) {
     statLine.code = utils.parsePlayerCode(stats.Player_ID.trim())
     statLine.start = stats.IsStarter
-    statLine.secs = stats.Minutes === "DNP" ? 0 : utils.timeToSeconds(stats.Minutes)
+    try {
+      statLine.secs =  utils.timeToSeconds(stats.Minutes)
+    } catch (exception) {
+      statLine.secs = 0
+      console.error("Stats - "+exception+" | team: "+stats.Team+ " player: "+statLine.code)
+    }
   }
     
   return statLine

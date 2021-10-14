@@ -54,7 +54,12 @@ const getPlayLine = play => {
     playLine.player = utils.parsePlayerCode(play.PLAYER_ID.trim())
   }
   if (play.MARKERTIME.trim() !== "") {
+    try {
     playLine.time = utils.timeToSeconds(play.MARKERTIME.trim())
+    } catch (exception) {
+      playLine.time = 0
+      console.error("PlayByPlay - "+ exception + " | numberOfPlay: "+play.NUMBEROFPLAY+ " codeteam: "+play.CODETEAM+" minute: "+play.MINUTE)
+    }
   }
   if (play.POINTS_A !== null || play.POINTS_B !== null) {
     playLine.ptsLocal = play.POINTS_A !== null ? play.POINTS_A : 0
