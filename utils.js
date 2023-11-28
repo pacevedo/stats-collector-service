@@ -11,19 +11,26 @@ export const timeToSeconds = time => {
   return seconds
 }
 
-export const parseDate = (date, time) => {
-  const auxDate = date.trim().split("/")
-  const auxTime = time.trim().split(":")
-  if (auxDate.length === 3){
-    const [day, month, year] = auxDate
-    if (auxTime.length === 2) {
-      const [hour, minutes] = auxTime
-      return new Date(parseInt(year), parseInt(month)-1, parseInt(day), parseInt(hour), parseInt(minutes), 0)
+export const parseDate = (dateTime) => {
+  const aux = dateTime.split(" - ")
+  if (aux.length === 2) {
+    let date = aux[0]
+    let time = aux[1]
+    const auxDate = date.trim().split("-")
+    const auxTime = time.trim().split(":")
+    if (auxDate.length === 3){
+      const [day, month, year] = auxDate
+      if (auxTime.length === 2) {
+        const [hour, minutes] = auxTime
+        return new Date(parseInt(year), parseInt(month)-1, parseInt(day), parseInt(hour), parseInt(minutes), 0)
+      } else {
+        console.error("parseDate - Parsing error. Length = " + auxTime.length + " time: " + time)
+      }
     } else {
-      console.error("parseDate - Parsing error. Length = " + auxTime.length + " time: " + time)
+      console.error("parseDate - Parsing error. Length = " + auxDate.length + " date: " + date)
     }
   } else {
-    console.error("parseDate - Parsing error. Length = " + auxDate.length + " date: " + date)
+    console.error("parseDate - Parsing error. Length = "+ aux.length + "dateTime: " + dateTime)
   }
   return null
 }
